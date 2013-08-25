@@ -14,9 +14,22 @@ var LiGenerator = module.exports = function LiGenerator(args, options, config) {
 util.inherits(LiGenerator, yeoman.generators.Base);
 
 LiGenerator.prototype.createCssFiles = function createCssFiles() {
-	if(this.folder != 'block'){
-		console.log('The first arguments need to be a directory');
-		return;
+	switch(this.folder){
+		case 'block':
+		case 'component':
+			this.write('app/style/' + this.folder + '/' + this.name + '.css', this.readFileAsString(path.join(this.sourceRoot(), 'default.css')));
+			break;
+
+		case 'font':
+			this.write('app/style/' + this.folder + '/' + this.name + '.css', this.readFileAsString(path.join(this.sourceRoot(), 'font.css')));
+			break;
+
+		case 'root':
+			this.write('app/style/' + this.name + '.css', this.readFileAsString(path.join(this.sourceRoot(), 'default.css')));
+			break;
+
+		default:
+			console.log('The first arguments need to be a directory');
+			break;
 	}
-	this.write('app/style/' + this.folder + '/' + this.name + '.css', this.readFileAsString(path.join(this.sourceRoot(), 'style.css')));
 };
